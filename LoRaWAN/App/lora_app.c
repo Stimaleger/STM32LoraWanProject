@@ -295,6 +295,8 @@ void LoRaWAN_Init(void)
 
     /* USER CODE BEGIN LoRaWAN_Init_1 */
 
+    APP_LOG(TS_OFF, VLEVEL_ALWAYS, "Initializing lorawan app !\r\n")
+
     /* Get LoRaWAN APP version*/
     UTIL_TIMER_Create(&TxLedTimer, LED_PERIOD_TIME, UTIL_TIMER_ONESHOT,
             OnTxTimerLedEvent, NULL);
@@ -436,9 +438,6 @@ static void OnRxData(LmHandlerAppData_t *appData, LmHandlerRxParams_t *params)
         }
         if (params->RxSlot < RX_SLOT_NONE)
         {
-            APP_LOG(TS_OFF, VLEVEL_H, "###### D/L FRAME:%04d | PORT:%d | DR:%d | SLOT:%s | RSSI:%d | SNR:%d\r\n",
-                    params->DownlinkCounter, RxPort, params->Datarate, slotStrings[params->RxSlot],
-                    params->Rssi, params->Snr);
         }
     }
     /* USER CODE END OnRxData_1 */
@@ -454,6 +453,21 @@ static void SendTxData(void)
     {
         if (PMS5003_Read(&data) == 0)
         {
+            APP_LOG(TS_OFF, VLEVEL_ALWAYS, ""
+                    "Read data from PMS5003:\r\n"
+                    "\tdata.pm1_0_atm: %d\r\n"
+                    "\tdata.pm2_5_atm: %d\r\n"
+                    "\tdata.pm_10_atm: %d\r\n"
+                    "\tdata.nbParticles0_3um: %d\r\n"
+                    "\tdata.nbParticles0_3um: %d\r\n"
+                    "\tdata.nbParticles0_5um: %d\r\n"
+                    "\tdata.nbParticles1_0um: %d\r\n"
+                    "\tdata.nbParticles2_5um: %d\r\n"
+                    "\tdata.nbParticles5_0um: %d\r\n"
+                    "\tdata.nbParticles10um: %d\r\n",
+                    data.pm1_0_atm, data.pm2_5_atm, data.pm_10_atm, data.nbParticles0_3um,
+                    data.nbParticles0_5um, data.nbParticles1_0um, data.nbParticles2_5um,
+                    data.nbParticles5_0um, data.nbParticles10um)
             lmData.Buffer = (uint8_t*) &data;
             lmData.BufferSize = sizeof(struct PMS5003Data);
             lmData.Port = 2;

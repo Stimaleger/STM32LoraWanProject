@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file    sys_app.c
-  * @author  MCD Application Team
-  * @brief   Initializes HW and SW system entities (not related to the radio)
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    sys_app.c
+ * @author  MCD Application Team
+ * @brief   Initializes HW and SW system entities (not related to the radio)
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -30,6 +30,7 @@
 /* USER CODE BEGIN Includes */
 #include "sys_debug.h"
 #include "stm32_seq.h"
+#include "stm32_adv_trace.h"
 
 /* USER CODE END Includes */
 
@@ -76,22 +77,24 @@ static uint8_t SYS_TimerInitialisedFlag = 0;
 void SystemApp_Init(void)
 {
   /* USER CODE BEGIN SystemApp_Init_1 */
-	__HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
+    __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
 
-	UTIL_TIMER_Init();
-	SYS_TimerInitialisedFlag = 1;
+    UTIL_TIMER_Init();
+    SYS_TimerInitialisedFlag = 1;
 
-	DBG_Init();
+    DBG_Init();
 
-  /*Init low power manager*/
-  UTIL_LPM_Init();
-  /* Disable Stand-by mode */
-  UTIL_LPM_SetOffMode((1 << CFG_LPM_APPLI_Id), UTIL_LPM_DISABLE);
+    UTIL_ADV_TRACE_Init();
 
-	#if defined (LOW_POWER_DISABLE) && (LOW_POWER_DISABLE == 1)
+    /*Init low power manager*/
+    UTIL_LPM_Init();
+    /* Disable Stand-by mode */
+    UTIL_LPM_SetOffMode((1 << CFG_LPM_APPLI_Id), UTIL_LPM_DISABLE);
+
+#if defined (LOW_POWER_DISABLE) && (LOW_POWER_DISABLE == 1)
 	  /* Disable Stop Mode */
 	  UTIL_LPM_SetStopMode((1 << CFG_LPM_APPLI_Id), UTIL_LPM_DISABLE);
-	#endif /* LOW_POWER_DISABLE */
+#endif /* LOW_POWER_DISABLE */
   /* USER CODE END SystemApp_Init_1 */
 
 }
@@ -176,17 +179,17 @@ void GetDevAddr(uint32_t *devAddr)
 
 /* USER CODE BEGIN EF */
 /**
-  * @brief redefines __weak function in stm32_seq.c such to enter low power
-  */
+ * @brief redefines __weak function in stm32_seq.c such to enter low power
+ */
 void UTIL_SEQ_Idle(void)
 {
-  /* USER CODE BEGIN UTIL_SEQ_Idle_1 */
+    /* USER CODE BEGIN UTIL_SEQ_Idle_1 */
 
-  /* USER CODE END UTIL_SEQ_Idle_1 */
-  UTIL_LPM_EnterLowPower();
-  /* USER CODE BEGIN UTIL_SEQ_Idle_2 */
+    /* USER CODE END UTIL_SEQ_Idle_1 */
+    UTIL_LPM_EnterLowPower();
+    /* USER CODE BEGIN UTIL_SEQ_Idle_2 */
 
-  /* USER CODE END UTIL_SEQ_Idle_2 */
+    /* USER CODE END UTIL_SEQ_Idle_2 */
 }
 /* USER CODE END EF */
 
