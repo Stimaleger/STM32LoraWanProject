@@ -52,7 +52,7 @@ extern "C" {
 /**
   * @brief Enable trace logs
   */
-#define APP_LOG_ENABLED                      1
+#define APP_LOG_ENABLED                      0
 
 /**
   * @brief Activate monitoring (probes) of some internal RF signals for debug purpose
@@ -75,7 +75,7 @@ extern "C" {
   * @brief Enable/Disable MCU Debugger pins (dbg serial wires)
   * @note  by HW serial wires are ON by default, need to put them OFF to save power
   */
-#define DEBUGGER_ENABLED                     0
+#define DEBUGGER_ENABLED                     1
 
 /**
   * @brief Disable Low Power mode
