@@ -67,6 +67,8 @@ void Error_Handler(void);
 #define B1_Pin GPIO_PIN_0
 #define B1_GPIO_Port GPIOA
 #define B1_EXTI_IRQn EXTI0_IRQn
+#define PMS5003_SET_Pin GPIO_PIN_12
+#define PMS5003_SET_GPIO_Port GPIOB
 #define B2_Pin GPIO_PIN_1
 #define B2_GPIO_Port GPIOA
 #define B2_EXTI_IRQn EXTI1_IRQn

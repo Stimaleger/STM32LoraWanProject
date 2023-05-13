@@ -253,7 +253,7 @@ static UTIL_TIMER_Object_t TxTimer;
 /**
  * @brief Tx Timer period
  */
-static UTIL_TIMER_Time_t TxPeriodicity = 10000;
+static UTIL_TIMER_Time_t TxPeriodicity = 120000;
 
 /**
  * @brief Join Timer period
@@ -457,7 +457,7 @@ static void SendTxData(void)
             lmData.Buffer = (uint8_t*) &data;
             lmData.BufferSize = sizeof(struct PMS5003Data);
             lmData.Port = 2;
-            LmHandlerSend(&lmData, LORAMAC_HANDLER_UNCONFIRMED_MSG, true);
+            LmHandlerSend(&lmData, LORAMAC_HANDLER_UNCONFIRMED_MSG, false);
         }
     }
     /* USER CODE END SendTxData_1 */

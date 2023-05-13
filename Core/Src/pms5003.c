@@ -2,6 +2,7 @@
 #include "stddef.h"
 #include "string.h"
 #include "pms5003.h"
+#include "main.h"
 #include "utilities_def.h"
 #include "stm32_seq.h"
 #include "stm32wlxx_hal_uart.h"
@@ -22,17 +23,19 @@ void PMS5003_Init(UART_HandleTypeDef *pUart)
 {
     uart = pUart;
     UART_InitCallbacksToDefault(uart);
+    HAL_GPIO_WritePin(PMS5003_SET_GPIO_Port, PMS5003_SET_Pin, GPIO_PIN_RESET);
+    HAL_UART_RegisterCallback(uart, HAL_UART_RX_COMPLETE_CB_ID, cbUartRxCmplt);
+    HAL_UART_RegisterCallback(uart, HAL_UART_ERROR_CB_ID, cbUartError);
 }
 
 int32_t PMS5003_Read(struct PMS5003Data *data)
 {
     int32_t ret = -1;
-    uint8_t tmpBuffer[PMS5003_DEFAULT_SIZE];
-    uint32_t timeout = 1000;
+    uint8_t tmpBuffer[PMS5003_DEFAULT_SIZE] = {0};
+    uint32_t timeout = 500;
 
     isDataReady = false;
-    HAL_UART_RegisterCallback(uart, HAL_UART_RX_COMPLETE_CB_ID, cbUartRxCmplt);
-    HAL_UART_RegisterCallback(uart, HAL_UART_ERROR_CB_ID, cbUartError);
+    HAL_GPIO_WritePin(PMS5003_SET_GPIO_Port, PMS5003_SET_Pin, GPIO_PIN_SET);
     HAL_UART_Receive_IT(uart, tmpBuffer, PMS5003_DEFAULT_SIZE);
     while (!isDataReady && timeout != 0)
     {
@@ -63,6 +66,7 @@ int32_t PMS5003_Read(struct PMS5003Data *data)
     {
         __NOP();
     }
+    HAL_GPIO_WritePin(PMS5003_SET_GPIO_Port, PMS5003_SET_Pin, GPIO_PIN_RESET);
     return ret;
 }
 
