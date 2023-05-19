@@ -446,33 +446,14 @@ static void OnRxData(LmHandlerAppData_t *appData, LmHandlerRxParams_t *params)
 static void SendTxData(void)
 {
     /* USER CODE BEGIN SendTxData_1 */
-    struct PMS5003Data data = {0};
-    LmHandlerAppData_t lmData;
+//    LmHandlerAppData_t lmData;
 
     if (LmHandlerJoinStatus() == LORAMAC_HANDLER_SET)
     {
-        if (PMS5003_Read(&data) == 0)
-        {
-            APP_LOG(TS_OFF, VLEVEL_ALWAYS, ""
-                    "Read data from PMS5003:\r\n"
-                    "\tdata.pm1_0_atm: %d\r\n"
-                    "\tdata.pm2_5_atm: %d\r\n"
-                    "\tdata.pm_10_atm: %d\r\n"
-                    "\tdata.nbParticles0_3um: %d\r\n"
-                    "\tdata.nbParticles0_3um: %d\r\n"
-                    "\tdata.nbParticles0_5um: %d\r\n"
-                    "\tdata.nbParticles1_0um: %d\r\n"
-                    "\tdata.nbParticles2_5um: %d\r\n"
-                    "\tdata.nbParticles5_0um: %d\r\n"
-                    "\tdata.nbParticles10um: %d\r\n",
-                    data.pm1_0_atm, data.pm2_5_atm, data.pm_10_atm, data.nbParticles0_3um,
-                    data.nbParticles0_5um, data.nbParticles1_0um, data.nbParticles2_5um,
-                    data.nbParticles5_0um, data.nbParticles10um)
-            lmData.Buffer = (uint8_t*) &data;
-            lmData.BufferSize = sizeof(struct PMS5003Data);
-            lmData.Port = 2;
-            LmHandlerSend(&lmData, LORAMAC_HANDLER_UNCONFIRMED_MSG, false);
-        }
+//            lmData.Buffer = (uint8_t*) &data;
+//            lmData.BufferSize = sizeof(struct PMS5003Data);
+//            lmData.Port = 2;
+//            LmHandlerSend(&lmData, LORAMAC_HANDLER_UNCONFIRMED_MSG, false);
     }
     /* USER CODE END SendTxData_1 */
 }

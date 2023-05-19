@@ -59,6 +59,14 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+static uint32_t count = 0;
+
+static void PMS5003_DataRead(struct PMS5003Data *data)
+{
+    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+    count++;
+}
 /* USER CODE END 0 */
 
 /**
@@ -102,8 +110,18 @@ int main(void)
   PMS5003_Init(&huart1);
   while (1)
   {
+
+      if (count >= 10)
+      {
+          PMS5003_StopReceiving();
+          count = 0;
+      }
+      else if (count == 0)
+      {
+          PMS5003_StartReceiving(PMS5003_DataRead);
+      }
     /* USER CODE END WHILE */
-    MX_LoRaWAN_Process();
+//    MX_LoRaWAN_Process();
 
     /* USER CODE BEGIN 3 */
 
